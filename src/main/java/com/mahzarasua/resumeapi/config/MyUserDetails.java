@@ -1,11 +1,12 @@
 package com.mahzarasua.resumeapi.config;
 
-import com.mahzarasua.resumeapi.model.User.*;
-import com.mahzarasua.resumeapi.model.User;
+import com.mahzarasua.resumeapi.model.UserModel;
+import com.mahzarasua.resumeapi.model.UserModel.Roles;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -19,20 +20,19 @@ public class MyUserDetails implements UserDetails {
     private boolean active;
     private List<GrantedAuthority> authorityList;
 
-    public MyUserDetails(User user){
-        this.username = user.getUsername();
-        this.password = user.getPassword();
-        this.active = user.isActive();
-        this.authorityList = Arrays.stream(getRoles(user).split(","))
+    public MyUserDetails(UserModel userModel) {
+        this.username = userModel.getUsername();
+        this.password = new BCryptPasswordEncoder().encode(userModel.getPassword());
+        this.active = userModel.isActive();
+        this.authorityList = Arrays.stream(getRoles(userModel).split(","))
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
     }
 
     @NotNull
-    private String getRoles(User user) {
+    private String getRoles(UserModel userModel) {
         StringBuilder builder = new StringBuilder();
-        for (Roles role: user.getRoles()
-             ) {
+        for (Roles role : userModel.getRoles()) {
             builder.append(role.getRole() + ",");
         }
         String roles = builder.toString();

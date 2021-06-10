@@ -1,15 +1,15 @@
 package com.mahzarasua.resumeapi.validator;
 
-import static com.mahzarasua.resumeapi.validator.ValidationUtils.*;
-
 import com.mahzarasua.resumeapi.domain.ResumeRequest;
 import com.mahzarasua.resumeapi.domain.ResumeRequest.*;
 import com.mahzarasua.resumeapi.exception.ExceptionBody.ErrorDetails;
-import com.mahzarasua.resumeapi.model.Resume;
+import com.mahzarasua.resumeapi.exception.MissingRequiredFieldException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.mahzarasua.resumeapi.validator.ValidationUtils.*;
 
 @Service
 public class ResumeValidator implements Validator<ResumeRequest> {
@@ -19,139 +19,96 @@ public class ResumeValidator implements Validator<ResumeRequest> {
     @Override
     public void validate(ResumeRequest resumeRequest) {
         List<ErrorDetails> errorDetails = new ArrayList<>();
-        validateName(resumeRequest.getFirstName(), resumeRequest.getLastName(), errorDetails);
-        validateEmail(resumeRequest.getEmail(), errorDetails);
-        validatePhoneNumber(resumeRequest.getPhoneNumber(), errorDetails);
-        validateCity(resumeRequest.getCity(), errorDetails);
-        validateCountry(resumeRequest.getCountry(), errorDetails);
-        validateSkills(resumeRequest.getSkills(), errorDetails);
-        validateLanguages(resumeRequest.getLanguages(), errorDetails);
-        validateWorkExperience(resumeRequest.getWorkexperience(), errorDetails);
-        validateEducation(resumeRequest.getEducation(), errorDetails);
-        validateChallenges(resumeRequest.getChallenges(), errorDetails);
+        validateRequiredField(resumeRequest, errorDetails);
+
+        if (!errorDetails.isEmpty())
+            throw new MissingRequiredFieldException(errorDetails, "One or more fields are required or the format is invalid");
     }
 
-    private void validateName(String firstName, String lastName, List<ErrorDetails> errorDetails) {
-        if (!isValidString(firstName))
-            errorDetails.add(newErrorDetail(REQ_FIELD, "First name"));
-        if (!isValidString(lastName))
-            errorDetails.add(newErrorDetail(REQ_FIELD, "Second name"));
-    }
-
-    private void validateEmail(String email, List<ErrorDetails> errorDetails) {
-        if (!isValidString(email))
-            errorDetails.add(newErrorDetail(REQ_FIELD, "Email"));
-        else if (!isValidEmail(email))
-            errorDetails.add(newErrorDetail(INVALID_FORM, "Email"));
-    }
-
-    private void validatePhoneNumber(String phoneNumber, List<ErrorDetails> errorDetails) {
-        if (!isValidString(phoneNumber))
-            errorDetails.add(newErrorDetail(REQ_FIELD, "Phone number"));
-        else if (!isValidPhoneNumber(phoneNumber))
+    private void validateRequiredField(ResumeRequest resumeRequest, List<ErrorDetails> errorDetails) {
+        if (!isValidString(resumeRequest.getFirstName())) errorDetails.add(newErrorDetail(REQ_FIELD, "First name"));
+        if (!isValidString(resumeRequest.getLastName())) errorDetails.add(newErrorDetail(REQ_FIELD, "Second name"));
+        if (!isValidString(resumeRequest.getEmail())) errorDetails.add(newErrorDetail(REQ_FIELD, "Email"));
+        if (!isValidString(resumeRequest.getPhoneNumber())) errorDetails.add(newErrorDetail(REQ_FIELD, "Phone number"));
+        if (!isValidString(resumeRequest.getCity())) errorDetails.add(newErrorDetail(REQ_FIELD, "City"));
+        if (!isValidString(resumeRequest.getCountry())) errorDetails.add(newErrorDetail(REQ_FIELD, "Country"));
+        if (!isValidEmail(resumeRequest.getEmail())) errorDetails.add(newErrorDetail(INVALID_FORM, "Email"));
+        if (!isValidPhoneNumber(resumeRequest.getPhoneNumber()))
             errorDetails.add(newErrorDetail(INVALID_FORM, "Phone number"));
+
+        validateSkills(resumeRequest, errorDetails);
+        validateLanguages(resumeRequest, errorDetails);
+        validateWorkExperience(resumeRequest, errorDetails);
+        validateEducation(resumeRequest, errorDetails);
+        validateChallenges(resumeRequest, errorDetails);
     }
 
-    private void validateCity(String city, List<ErrorDetails> errorDetails) {
-        if (!isValidString(city))
-            errorDetails.add(newErrorDetail(REQ_FIELD, "City"));
-    }
-
-    private void validateCountry(String country, List<ErrorDetails> errorDetails) {
-        if (!isValidString(country))
-            errorDetails.add(newErrorDetail(REQ_FIELD, "Country"));
-    }
-
-    private void validateSkills(List<Skill> skills, List<ErrorDetails> errorDetails) {
-        // If no skills were added, there are no validations to do here.
-        if (skills != null) {
-            for (Skill s: skills) {
-                if (!isValidString(s.getName()))
-                    errorDetails.add(newErrorDetail(REQ_FIELD, "Skill name"));
-                else if (s.getPercentage() <= 0 || s.getPercentage() > 100)
-                    errorDetails.add(newErrorDetail(
-                            INVALID_FORM, "Percentage for skill " + s.getName()));
+    private void validateSkills(ResumeRequest resumeRequest, List<ErrorDetails> errorDetails) {
+        // If no resumeRequest were added, there are no validations to do here.
+        if (!resumeRequest.getSkills().isEmpty()) {
+            for (Skill s : resumeRequest.getSkills()) {
+                if (!isValidString(s.getName())) errorDetails.add(newErrorDetail(REQ_FIELD, "Skill name"));
+                if (s.getPercentage() <= 0 || s.getPercentage() > 100)
+                    errorDetails.add(newErrorDetail(INVALID_FORM, "Percentage for skill " + s.getName()));
             }
         }
     }
 
-    private void validateLanguages(List<Language> languages, List<ErrorDetails> errorDetails) {
-        // If no languages were added, there are no validations to do here.
-        if (languages != null) {
-            for (Language l: languages) {
-                if (!isValidString(l.getName()))
-                    errorDetails.add(newErrorDetail(REQ_FIELD, "Language name"));
-                else if (l.getPercentage() <= 0 || l.getPercentage() > 100)
-                    errorDetails.add(newErrorDetail(
-                            INVALID_FORM, "Percentage for language " + l.getName()));
+    private void validateLanguages(ResumeRequest resumeRequest, List<ErrorDetails> errorDetails) {
+        // If no resumeRequest were added, there are no validations to do here.
+        if (!resumeRequest.getLanguages().isEmpty())
+            for (Language l : resumeRequest.getLanguages()) {
+                if (!isValidString(l.getName())) errorDetails.add(newErrorDetail(REQ_FIELD, "Language name"));
+                if (l.getPercentage() <= 0 || l.getPercentage() > 100)
+                    errorDetails.add(newErrorDetail(REQ_FIELD, "Percentage for language " + l.getName()));
             }
-        }
     }
 
-    private void validateWorkExperience(
-            List<WorkExperience> workExperiences, List<ErrorDetails> errorDetails) {
+    private void validateWorkExperience(ResumeRequest resumeRequest, List<ErrorDetails> errorDetails) {
         // If no work experiences were added, there are no validations to do here.
-        if (workExperiences != null) {
-            for (WorkExperience we: workExperiences) {
-                if (!isValidString(we.getTitle()))
-                    errorDetails.add(newErrorDetail(REQ_FIELD, "Work title"));
+        if (!resumeRequest.getWorkexperience().isEmpty()) {
+            for (WorkExperience we : resumeRequest.getWorkexperience()) {
+                if (!isValidString(we.getTitle())) errorDetails.add(newErrorDetail(REQ_FIELD, "Work title"));
                 else if (!isValidString(we.getCompany()))
-                    errorDetails.add(newErrorDetail(
-                            REQ_FIELD, "Company name for work " + we.getTitle()));
+                    errorDetails.add(newErrorDetail(REQ_FIELD, "Company name for work " + we.getTitle()));
                 else if (we.getFrom() == null)
-                    errorDetails.add(newErrorDetail(
-                            REQ_FIELD, "Beginning date for work " +
-                                    we.getTitle() + " at " + we.getCompany()));
+                    errorDetails.add(newErrorDetail(REQ_FIELD, "Beginning date for work " + we.getTitle() + " at " + we.getCompany()));
                 else if (we.getCurrent().equals(false)) {
                     if (we.getTo() == null)
-                        errorDetails.add(newErrorDetail(
-                                REQ_FIELD, "Ending date for work " +
-                                        we.getTitle() + " at " + we.getCompany()));
+                        errorDetails.add(newErrorDetail(REQ_FIELD, "Ending date for work " + we.getTitle() + " at " + we.getCompany()));
                         // Verify the ending date is greater than the beginning date.
                     else if (!we.getTo().after(we.getFrom()))
-                        errorDetails.add(newErrorDetail(
-                                REQ_FIELD, "Ending date for work " +
-                                        we.getTitle() + " must be greater than beginning date"));
+                        errorDetails.add(newErrorDetail(REQ_FIELD, "Ending date for work " + we.getTitle() + " must be greater than beginning date"));
                 }
             }
         }
     }
 
-    private void validateEducation(List<Education> educations, List<ErrorDetails> errorDetails) {
+    private void validateEducation(ResumeRequest resumeRequest, List<ErrorDetails> errorDetails) {
         // If no education is added, there are no validations to do here.
-        if (educations != null) {
-            for (Education e: educations) {
-                if (!isValidString(e.getSchoolName()))
-                    errorDetails.add(newErrorDetail(REQ_FIELD, "School name"));
+        if (!resumeRequest.getEducation().isEmpty()) {
+            for (Education e : resumeRequest.getEducation()) {
+                if (!isValidString(e.getSchoolName())) errorDetails.add(newErrorDetail(REQ_FIELD, "School name"));
                 else if (!isValidString(e.getCareer()))
-                    errorDetails.add(newErrorDetail(
-                            REQ_FIELD, "Career name at " + e.getSchoolName()));
+                    errorDetails.add(newErrorDetail(REQ_FIELD, "Career name at " + e.getSchoolName()));
                 else if (!isValidString(e.getDegree()))
-                    errorDetails.add(newErrorDetail(
-                            REQ_FIELD, "Degree of your career at " + e.getSchoolName()));
+                    errorDetails.add(newErrorDetail(REQ_FIELD, "Degree of your career at " + e.getSchoolName()));
                 else if (!e.getDegree().equals("Bachelor") && !e.getDegree().equals("Master") && !e.getDegree().equals("Ph"))
-                    errorDetails.add(newErrorDetail(
-                            INVALID_FORM, "Degree of you career at " + e.getSchoolName() +
-                                    " should be either 'Bachelor', 'Master', or 'Ph'"));
+                    errorDetails.add(newErrorDetail(INVALID_FORM, "Degree of you career at " + e.getSchoolName() + " should be either 'Bachelor', 'Master', or 'Ph'"));
                 else if (e.getFrom() == null)
-                    errorDetails.add(newErrorDetail(
-                            REQ_FIELD, "Beginning date of your career at " + e.getSchoolName()));
+                    errorDetails.add(newErrorDetail(REQ_FIELD, "Beginning date of your career at " + e.getSchoolName()));
                 else if (e.getTo() == null)
-                    errorDetails.add(newErrorDetail(
-                            REQ_FIELD, "(Actual or expected) Ending date for your " +
-                                    "career at " + e.getSchoolName()));
+                    errorDetails.add(newErrorDetail(REQ_FIELD, "(Actual or expected) Ending date for your " + "career at " + e.getSchoolName()));
                 else if (!e.getTo().after(e.getFrom()))
-                    errorDetails.add(newErrorDetail(
-                            INVALID_FORM, "(Actual or expected) Ending date for your " +
-                                    "career at " + e.getSchoolName() + " must be greater than beginning date"));
+                    errorDetails.add(newErrorDetail(INVALID_FORM, "(Actual or expected) Ending date for your " + "career at " + e.getSchoolName() + " must be greater than beginning date"));
             }
         }
     }
 
-    private void validateChallenges(List<Challenge> challenges, List<ErrorDetails> errorDetails) {
-        // If no challenges were added, there are no validations to do here.
-        if (challenges != null) {
-            for (Challenge c: challenges) {
+    private void validateChallenges(ResumeRequest resumeRequest, List<ErrorDetails> errorDetails) {
+        // If no resumeRequest were added, there are no validations to do here.
+        if (!resumeRequest.getChallenges().isEmpty()) {
+            for (Challenge c : resumeRequest.getChallenges()) {
                 if (!isValidString(c.getName()))
                     errorDetails.add(newErrorDetail(REQ_FIELD, "Name of challenge"));
                 else if (!isValidString(c.getDescription()))

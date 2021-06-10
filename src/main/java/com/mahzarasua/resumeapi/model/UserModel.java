@@ -11,7 +11,7 @@ import java.util.List;
 
 @Document(collection = "users")
 @Data
-public class User {
+public class UserModel {
     @Id
     private String id;
     private String username;

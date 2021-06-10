@@ -1,7 +1,9 @@
 package com.mahzarasua.resumeapi.mapper;
 
+import com.mahzarasua.resumeapi.domain.GetResumeResponse;
+import com.mahzarasua.resumeapi.domain.ResumeRequest;
 import com.mahzarasua.resumeapi.domain.ResumeResponse;
-import com.mahzarasua.resumeapi.model.Resume;
+import com.mahzarasua.resumeapi.model.ResumeModel;
 import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.converter.builtin.PassThroughConverter;
 import ma.glasnost.orika.impl.ConfigurableMapper;
@@ -19,7 +21,11 @@ public class ResumeMapper extends ConfigurableMapper {
     }
 
     public MapperFactory configureMapper(MapperFactory factory){
-        factory.classMap(Resume.class, ResumeResponse.class)
+        factory.classMap(ResumeModel.class, GetResumeResponse.class)
+                .byDefault().mapNulls(false).register();
+        factory.classMap(ResumeModel.class, ResumeResponse.class)
+                .byDefault().mapNulls(false).register();
+        factory.classMap(ResumeRequest.class, ResumeModel.class)
                 .byDefault().mapNulls(false).register();
         return factory;
     }

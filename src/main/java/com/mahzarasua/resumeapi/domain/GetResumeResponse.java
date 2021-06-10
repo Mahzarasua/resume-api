@@ -28,6 +28,7 @@ public class GetResumeResponse {
     private List<Challenge> challenges;
     private SocialMedia socialMedia;
     private Config config;
+    private Date creationdate;
 
     @AllArgsConstructor
     @Getter

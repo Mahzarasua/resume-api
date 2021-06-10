@@ -12,7 +12,7 @@ import java.util.List;
 
 @Document(collection = "resumes")
 @Data
-public class Resume {
+public class ResumeModel {
     @Id
     private String id;
     private String firstName;
@@ -29,6 +29,7 @@ public class Resume {
     private List<Challenge> challenges;
     private SocialMedia socialMedia;
     private Config config;
+    private Date creationdate;
 
     @AllArgsConstructor
     @Getter
