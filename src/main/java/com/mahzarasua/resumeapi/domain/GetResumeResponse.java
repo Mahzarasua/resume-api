@@ -31,72 +31,79 @@ public class GetResumeResponse {
     private Date creationdate;
 
     @AllArgsConstructor
+    @NoArgsConstructor
     @Getter
     @Setter
     public static class Challenge {
-        private final String name;
-        private final Date date;
-        private final String description;
-        private final String url;
+        private String name;
+        private Date date;
+        private String description;
+        private String url;
     }
 
     @AllArgsConstructor
+    @NoArgsConstructor
     @Getter
     @Setter
     public static class Config {
-        private final String color;
-        private final String fontFamily;
-        private final String genericFamily;
+        private String color;
+        private String fontFamily;
+        private String genericFamily;
     }
 
     @AllArgsConstructor
+    @NoArgsConstructor
     @Getter
     @Setter
     public static class Education {
-        private final String schoolName;
-        private final String career;
-        private final Date from;
-        private final Date to;
-        private final String degree;
+        private String schoolName;
+        private String career;
+        private Date from;
+        private Date to;
+        private String degree;
     }
 
     @AllArgsConstructor
+    @NoArgsConstructor
     @Getter
     @Setter
     public static class Language {
-        private final String name;
-        private final byte percentage;
+        private String name;
+        private byte percentage;
     }
 
     @AllArgsConstructor
+    @NoArgsConstructor
     @Getter
     @Setter
     public static class Skill {
-        private final String name;
-        private final byte percentage;
+        private String name;
+        private byte percentage;
     }
 
     @AllArgsConstructor
+    @NoArgsConstructor
     @Getter
     @Setter
     public static class SocialMedia {
-        private final String facebook;
-        private final String instagram;
-        private final String snapchat;
-        private final String pinterest;
-        private final String twitter;
-        private final String linkedin;
+        private String facebook;
+        private String instagram;
+        private String snapchat;
+        private String pinterest;
+        private String twitter;
+        private String linkedin;
     }
 
     @AllArgsConstructor
+    @NoArgsConstructor
     @Getter
     @Setter
     public static class WorkExperience {
-        private final String title;
-        private final String company;
-        private final Date from;
-        private final Date to;
-        private final Boolean current;
-        private final String description;
+        private String title;
+        private String company;
+        private Date from;
+        private Date to;
+        private Boolean current;
+        private String description;
     }
 }

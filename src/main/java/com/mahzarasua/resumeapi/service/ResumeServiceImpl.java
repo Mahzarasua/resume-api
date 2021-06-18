@@ -51,7 +51,7 @@ public class ResumeServiceImpl implements ResumeService {
 
     private void validateAndSaveResume(ResumeRequest resumeRequest) {
         resumeValidator.validate(resumeRequest);
-        if (resumeRequest.getCreationdate() == null) resumeRequest.setCreationdate(new Date());
+        resumeRequest.setCreationdate((resumeRequest.getCreationdate() == null) ? new Date() : resumeRequest.getCreationdate());
         resumeRepository.save(resumeMapper.map(resumeRequest, ResumeModel.class));
     }
 }

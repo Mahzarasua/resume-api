@@ -45,7 +45,7 @@ public class ResumeValidator implements Validator<ResumeRequest> {
 
     private void validateSkills(ResumeRequest resumeRequest, List<ErrorDetails> errorDetails) {
         // If no resumeRequest were added, there are no validations to do here.
-        if (!resumeRequest.getSkills().isEmpty()) {
+        if (resumeRequest.getSkills() != null && !resumeRequest.getSkills().isEmpty()) {
             for (Skill s : resumeRequest.getSkills()) {
                 if (!isValidString(s.getName())) errorDetails.add(newErrorDetail(REQ_FIELD, "Skill name"));
                 if (s.getPercentage() <= 0 || s.getPercentage() > 100)
@@ -56,7 +56,7 @@ public class ResumeValidator implements Validator<ResumeRequest> {
 
     private void validateLanguages(ResumeRequest resumeRequest, List<ErrorDetails> errorDetails) {
         // If no resumeRequest were added, there are no validations to do here.
-        if (!resumeRequest.getLanguages().isEmpty())
+        if (resumeRequest.getLanguages() != null && !resumeRequest.getLanguages().isEmpty())
             for (Language l : resumeRequest.getLanguages()) {
                 if (!isValidString(l.getName())) errorDetails.add(newErrorDetail(REQ_FIELD, "Language name"));
                 if (l.getPercentage() <= 0 || l.getPercentage() > 100)
@@ -66,7 +66,7 @@ public class ResumeValidator implements Validator<ResumeRequest> {
 
     private void validateWorkExperience(ResumeRequest resumeRequest, List<ErrorDetails> errorDetails) {
         // If no work experiences were added, there are no validations to do here.
-        if (!resumeRequest.getWorkexperience().isEmpty()) {
+        if (resumeRequest.getWorkexperience() != null && !resumeRequest.getWorkexperience().isEmpty()) {
             for (WorkExperience we : resumeRequest.getWorkexperience()) {
                 if (!isValidString(we.getTitle())) errorDetails.add(newErrorDetail(REQ_FIELD, "Work title"));
                 else if (!isValidString(we.getCompany()))
@@ -86,7 +86,7 @@ public class ResumeValidator implements Validator<ResumeRequest> {
 
     private void validateEducation(ResumeRequest resumeRequest, List<ErrorDetails> errorDetails) {
         // If no education is added, there are no validations to do here.
-        if (!resumeRequest.getEducation().isEmpty()) {
+        if (resumeRequest.getEducation() != null && !resumeRequest.getEducation().isEmpty()) {
             for (Education e : resumeRequest.getEducation()) {
                 if (!isValidString(e.getSchoolName())) errorDetails.add(newErrorDetail(REQ_FIELD, "School name"));
                 else if (!isValidString(e.getCareer()))
@@ -107,7 +107,7 @@ public class ResumeValidator implements Validator<ResumeRequest> {
 
     private void validateChallenges(ResumeRequest resumeRequest, List<ErrorDetails> errorDetails) {
         // If no resumeRequest were added, there are no validations to do here.
-        if (!resumeRequest.getChallenges().isEmpty()) {
+        if (resumeRequest.getChallenges() != null && !resumeRequest.getChallenges().isEmpty()) {
             for (Challenge c : resumeRequest.getChallenges()) {
                 if (!isValidString(c.getName()))
                     errorDetails.add(newErrorDetail(REQ_FIELD, "Name of challenge"));
