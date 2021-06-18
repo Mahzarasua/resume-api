@@ -5,9 +5,11 @@ import com.mahzarasua.resumeapi.domain.GetResumeResponse;
 import com.mahzarasua.resumeapi.domain.ResumeRequest;
 import com.mahzarasua.resumeapi.domain.ResumeResponse;
 import org.jetbrains.annotations.NotNull;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
@@ -17,16 +19,17 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
+@SpringBootTest
+@WebAppConfiguration
 public class ResumeControllerTest extends AbstractTest {
     private final String uri = "/api/v1/resume/";
 
-    private ResumeRequest r = new ResumeRequest();
+    private final ResumeRequest r = new ResumeRequest();
 
     @Override
-    @Before
+    @BeforeEach
     public void setUp() {
         super.setUp();
         setDummyData();
@@ -89,7 +92,7 @@ public class ResumeControllerTest extends AbstractTest {
         assertEquals(201, status);
         String content = mvcResult.getResponse().getContentAsString();
         ResumeResponse response = super.mapFromJson(content, ResumeResponse.class);
-        assertTrue(!response.getResourceId().isEmpty());
+        assertFalse(response.getResourceId().isEmpty());
         System.out.println("Resume created with resourceId: " + response.getResourceId());
     }
 
@@ -104,8 +107,8 @@ public class ResumeControllerTest extends AbstractTest {
         GetResumeResponse[] response = super.mapFromJson(content, GetResumeResponse[].class);
         assertTrue(response.length > 0);
         System.out.println("Total of resumes: " + response.length);
-        for (int i = 0; i < response.length; i++)
-            System.out.println("Resume found with resourceId: " + response[i].getId());
+        for (GetResumeResponse getResumeResponse : response)
+            System.out.println("Resume found with resourceId: " + getResumeResponse.getId());
     }
 
     @Test
@@ -121,7 +124,7 @@ public class ResumeControllerTest extends AbstractTest {
         assertEquals(200, status);
         String content = mvcResult.getResponse().getContentAsString();
         ResumeResponse response = super.mapFromJson(content, ResumeResponse.class);
-        assertTrue(!response.getResourceId().isEmpty());
+        assertFalse(response.getResourceId().isEmpty());
         System.out.println("Resume updated with resourceId: " + response.getResourceId());
     }
 
@@ -134,7 +137,7 @@ public class ResumeControllerTest extends AbstractTest {
         assertEquals(200, status);
         String content = mvcResult.getResponse().getContentAsString();
         GetResumeResponse response = super.mapFromJson(content, GetResumeResponse.class);
-        assertTrue(!response.getId().isEmpty());
+        assertFalse(response.getId().isEmpty());
         System.out.println("Resume found with resourceId: " + response.getId());
     }
 }
