@@ -1,0 +1,79 @@
+{
+  "id": "",
+  "firstName": "Miguel Alejandro",
+  "lastName": "Hernandez Zarasua",
+  "job": "Backend Developer",
+  "city": "Colima City",
+  "country": "Mexico",
+  "email": "mahzarasua@outlook.com",
+  "phoneNumber": "+523121557091",
+  "skills": [
+    {
+      "name": "C++",
+      "percentage": 20
+    },
+    {
+      "name": "Javascript",
+      "percentage": 40
+    },
+    {
+      "name": "Python",
+      "percentage": 30
+    },
+    {
+      "name": "Java",
+      "percentage": 20
+    }
+  ],
+  "languages": [
+    {
+      "name": "Spanish (native)",
+      "percentage": 90
+    },
+    {
+      "name": "English",
+      "percentage": 60
+    }
+  ],
+  "workexperience": [
+    {
+      "title": "Backend Developer",
+      "company": "Digitaport",
+      "from": "2020-11-01T06:00:00.000+00:00",
+      "to": null,
+      "current": true,
+      "description": "Design and develop the backend for the enterprise's projects."
+    }
+  ],
+  "education": [
+    {
+      "schoolName": "Instituto Tecnologico de Lazaro Cardenas",
+      "career": "Computer Systems Engineering",
+      "from": "2016-08-01T05:00:00.000+00:00",
+      "to": "2021-12-01T06:00:00.000+00:00",
+      "degree": "Bachelor"
+    }
+  ],
+  "challenges": [
+    {
+      "name": "Spring Boot REST API for Curriculums",
+      "date": "2021-02-01T06:00:00.000+00:00",
+      "description": "Develop an API for a page where you can create, update and read your Curriculum Vitae (yes, this one!).",
+      "url": "https://github.com/JLOchoaM/at-cv-api"
+    }
+  ],
+  "socialMedia": {
+    "facebook": null,
+    "instagram": null,
+    "snapchat": null,
+    "pinterest": null,
+    "twitter": null,
+    "linkedin": null
+  },
+  "config": {
+    "color": null,
+    "fontFamily": "Serif",
+    "genericFamily": "Sans"
+  },
+  "creationdate": ""
+}

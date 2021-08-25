@@ -109,7 +109,7 @@ This is an example of how to list things you need to use the software and how to
    ```sh
    npm install
    ```
-
+3. Check the examples directory and review notes.txt file
 
 
 <!-- USAGE EXAMPLES -->

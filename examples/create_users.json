@@ -1,0 +1,14 @@
+{
+  "id": "60bc55d5cecc16279115b246",
+  "username": "user",
+  "password": "pass",
+  "active": true,
+  "roles": [
+    {
+      "role": "USER"
+    },
+    {
+      "role": "ADMIN"
+    }
+  ]
+}

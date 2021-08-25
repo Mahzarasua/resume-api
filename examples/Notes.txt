@@ -1,0 +1,8 @@
+Steps:
+1. You must create a db in mongo called: resume-api
+2. Create the following collections:
+    2.1. resumes
+    2.2. users
+3. Once you create the db, you should be able to run the service.
+4. The user you create will work as basic authorization so make sure to modify/update it in  your postman collection
+5. You will find a postman collection in this folder so you can test.
